@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Critical Making - Slides</title>
+  <link rel="stylesheet" href="../../main.css">
+  <style>
+    /* Deck layout on top of main.css tokens */
+    html, body { height: 100%; overflow: hidden; }
+    body { display: block; background: var(--background-color); }
+
+    /* Accessibility: italics only for container titles (<cite>), never quotes */
+    .slide blockquote, .slide q { font-style: normal; }
+    .slide em, .slide i { font-style: normal; }
+    .slide cite { font-style: italic; }
+
+    .deck { position: relative; height: 100vh; }
+    .slide {
+      position: absolute; inset: 0;
+      display: none;
+      flex-direction: column; justify-content: center;
+      padding: 6vh 8vw 10vh;
+      box-sizing: border-box;
+    }
+    .slide.active { display: flex; }
+
+    .slide h1 { font-size: clamp(2.2rem, 5vw, 4rem); color: var(--accent-color); line-height: 1.1; }
+    .slide h2 { font-size: clamp(1.6rem, 3.4vw, 2.6rem); color: var(--accent-color); margin-bottom: 3vh; }
+    .slide p, .slide li { font-size: clamp(1.1rem, 2vw, 1.6rem); line-height: 1.4; }
+    .slide ul { margin-left: 1.2em; }
+    .slide li { margin-bottom: 1.2vh; }
+    .slide blockquote {
+      border-left: 4px solid var(--accent-color);
+      padding-left: 1em; color: var(--grey-color-dark);
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+    }
+    .slide .ref { color: var(--grey-color); font-size: 0.8em; }
+    .slide .sub { color: var(--grey-color-dark); }
+
+    .prompt {
+      font-size: clamp(1.3rem, 2.6vw, 2rem) !important;
+      border: 3px solid var(--accent-color); border-radius: 8px;
+      padding: 2vh 2vw; margin-bottom: 3vh;
+    }
+
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5vh 3vw; }
+    .grid > div { border-top: 3px solid var(--accent-color); padding-top: 1vh; }
+    .grid h3 { font-size: clamp(1.1rem, 1.9vw, 1.5rem); margin-bottom: 0.5vh; }
+    .grid p { font-size: clamp(0.95rem, 1.5vw, 1.2rem); }
+
+    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 3vw; }
+    .cols h3 { color: var(--accent-color); font-size: clamp(1.1rem, 1.9vw, 1.5rem); }
+    .cols li { font-size: clamp(1rem, 1.7vw, 1.3rem); }
+
+    .flow { display: flex; gap: 1.5vw; align-items: stretch; }
+    .flow > div {
+      flex: 1; border: 2px solid var(--grey-color-light);
+      padding: 2vh 1.2vw; border-radius: 6px;
+    }
+    .flow > .arrow { flex: 0; border: 0; align-self: center; font-size: 2rem; color: var(--accent-color); }
+    .flow h3 { color: var(--accent-color); font-size: clamp(1.1rem, 1.9vw, 1.5rem); }
+    .flow p { font-size: clamp(0.95rem, 1.5vw, 1.2rem); }
+
+    /* Text beside an image */
+    .with-fig { display: grid; grid-template-columns: 3fr 2fr; gap: 3vw; align-items: center; }
+    .with-fig figure { margin: 0; text-align: center; }
+    .with-fig img {
+      max-width: 100%; max-height: 68vh; object-fit: contain;
+      border-radius: 4px;
+    }
+    .with-fig figcaption { color: var(--grey-color); font-size: clamp(0.8rem, 1.2vw, 1rem); margin-top: 0.5vh; }
+    .with-fig .flow { flex-direction: column; gap: 1vh; }
+    .with-fig .flow > div { padding: 1vh 1.2vw; }
+    .with-fig .flow h3 { margin-bottom: 0.5vh; }
+    .with-fig .flow p { margin-bottom: 0; }
+    .with-fig .flow > .arrow { padding: 0; line-height: 1; font-size: 1.2rem; text-align: center; }
+    .with-fig blockquote { margin-bottom: 1.5vh; }
+
+    /* Gaps for Glenn to fill or approve; remove the class when settled */
+    .query {
+      background: #fff3b0; color: #5a4a00;
+      font-family: var(--mono-font-family); font-size: 0.75em;
+      padding: 0 0.3em; border-radius: 3px;
+    }
+
+    /* Grace-period countdown */
+    .countdown {
+      position: fixed; inset: 0; z-index: 10;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(253, 253, 253, 0.92);
+      font-family: var(--mono-font-family);
+      font-size: clamp(5rem, 18vw, 14rem); color: var(--accent-color);
+    }
+    .countdown[hidden] { display: none; }
+
+    /* Timer bar */
+    .timer {
+      position: fixed; left: 0; right: 0; bottom: 0;
+      display: flex; align-items: center; gap: 1.5em;
+      padding: 0.6em 1.2em;
+      font-family: var(--mono-font-family); font-size: 0.95rem;
+      background: var(--header-bg); border-top: 1px solid var(--grey-color-light);
+    }
+    .timer .bar { flex: 1; height: 6px; background: var(--grey-color-light); border-radius: 3px; overflow: hidden; }
+    .timer .fill { height: 100%; width: 0; background: var(--accent-color); }
+    .timer.over .fill { background: #c0392b; }
+    .timer.over .slide-clock { color: #c0392b; font-weight: bold; }
+    .timer .hint { color: var(--grey-color); }
+    .timer.paused .slide-clock::after { content: " (paused)"; color: var(--grey-color); }
+
+    @media (max-width: 700px) {
+      .grid, .flow, .cols, .with-fig { display: block; }
+      .with-fig img { max-height: 40vh; }
+      .grid > div, .flow > div { margin-bottom: 2vh; }
+      .flow > .arrow { display: none; }
+    }
+  </style>
+</head>
+<body>
+<main class="deck" aria-live="polite">
+
+  <!-- 1 -->
+  <section class="slide" data-seconds="20">
+    <div class="with-fig">
+      <div>
+        <h1>Critical Making</h1>
+        <p class="sub">Glenn S. Ritchey III · Texts &amp; Technology, UCF</p>
+      </div>
+      <figure>
+        <img src="../assets/counter-corpus.jpg" alt="One of Glenn's presentation slides, projected onto dark window shades, reads “You are the counter-corpus.” A bright strip of daylight runs down the gap between two shades.">
+        <figcaption>One of my slides, photographed by a friend</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 2: free-write setup and writing time -->
+  <section class="slide" data-seconds="150">
+    <h2>Free-write: 2 minutes</h2>
+    <p>Open the sheet: <strong>glennritchey.net/tandt/diss-design/worksheet/</strong></p>
+    <p class="prompt">What are your experiences with critical making? Is there any place in your own work for the convergence of critical thinking and creative making?</p>
+    <p class="sub">Your writing stays in your own browser. Keep the sheet open: it comes back at the end.</p>
+  </section>
+
+  <!-- 3: preliminary history -->
+  <section class="slide" data-seconds="40">
+    <h2>A preliminary history: Kamĩrĩĩthũ</h2>
+    <div class="with-fig">
+      <div>
+        <ul>
+          <li>At the Kamĩrĩĩthũ community theatre, the play was shaped collectively: villagers contributed their own language, songs, and histories.</li>
+          <li>The playwrights' authority was one voice among many.</li>
+          <li>The community makes from its own cultural archive instead of having it decoded for it.</li>
+          <li>Kamĩrĩĩthũ was suppressed by the state, and Ngũgĩ was detained. It is an example, not a metaphor.</li>
+        </ul>
+        <p class="ref">Ngũgĩ wa Thiong'o, “The Language of African Theatre,” <cite>Decolonising the Mind</cite> (1988)</p>
+      </div>
+      <figure>
+        <img src="../assets/ngugi.jpeg" alt="Cover of Decolonising the Mind: The Politics of Language in African Literature by Ngũgĩ wa Thiong'o, with a halftone photograph of the author's forehead and eyes.">
+      </figure>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="slide" data-seconds="40">
+    <h2>What critical making is</h2>
+    <div class="with-fig">
+      <div>
+        <blockquote>
+          “to use material forms of engagement with technologies to supplement and extend critical reflection and, in doing so, to reconnect our lived experiences with technologies to social and conceptual critique”
+          <span class="ref">(Ratto 253)</span>
+        </blockquote>
+        <blockquote>
+          “rather than being purposive or fully functional devices, prototype development is used to extend knowledge and skills in relevant technical areas as well as to provide the means for conceptual exploration”
+          <span class="ref">(Ratto 253)</span>
+        </blockquote>
+      </div>
+      <figure>
+        <img src="../assets/ratto-flwrpwr.png" alt="Diagram titled FLWR .01b: craft materials (a wire hanger, a cardboard tube, paper) form the body, and electronic components (an Arduino board, a 9-volt battery, infrared emitters and detectors, an LED) go inside a white paper cup. Photos at right show a finished flwr.">
+        <figcaption>Ratto's flwr (2011)</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="slide" data-seconds="40">
+    <h2>Where it's used, and what to watch for</h2>
+    <div class="with-fig">
+      <ul>
+        <li><strong>Fields:</strong> STS and information studies (Ratto); technology and society / engineering pedagogy (Mann); digital humanities (Smithies); DH methodologies and pedagogy (Johnson &amp; Salter)</li>
+        <li><strong>Strength:</strong> understanding comes through the making: “joint conceptual and materially productive work” <span class="ref">(Ratto 258)</span></li>
+        <li><strong>Where I'm continuing to build:</strong>
+          <ul>
+            <li>the theory–technology mapping can turn reductive <span class="ref">(Ratto 257)</span></li>
+            <li>“not a model for general use”: upkeep, one maker's skills, platform dependence <span class="ref">(Smithies)</span></li>
+            <li>the purpose can look opaque to colleagues <span class="ref">(Smithies)</span></li>
+            <li>AI handled expediently: one optional prompt, not a full module <span class="ref">(Johnson &amp; Salter)</span></li>
+          </ul>
+        </li>
+        <li><strong>Considerations:</strong> positionality (who counts as an insider), keeping the steps visible, maintenance</li>
+      </ul>
+      <figure>
+        <img src="../assets/cm-zines.jpeg" alt="A hand holds a thick stack of small zines; the top cover, black with white hand-drawn diagrams, reads “Critical Making: Projects.”">
+        <figcaption>Garnet Hertz, Critical Making zines, conceptlab.com</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="slide" data-seconds="40">
+    <h2>Four studies that made things</h2>
+    <div class="grid">
+      <div>
+        <h3>Ratto (2011): flwr</h3>
+        <p>Networked “flwrs” set to a gift economy; when most only listened, the network “died,” and the talk turned to reciprocity.</p>
+      </div>
+      <div>
+        <h3>Mann (2014): maktivism</h3>
+        <p>Students hack dumpster computers and ID readers; the “Griefcase” makes a guard who wants to search it give up his own fingerprints.</p>
+      </div>
+      <div>
+        <h3>Smithies (2017): Full Stack DH</h3>
+        <p>A personal research environment on a Raspberry Pi: control of the whole stack, yet still dependent on Amazon, and still needing care.</p>
+      </div>
+      <div>
+        <h3>Johnson &amp; Salter (2025): “Generation”</h3>
+        <p>Students regenerate their own assignments with ChatGPT and critique the output.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="slide" data-seconds="40">
+    <h2>Tensions</h2>
+    <ul>
+      <li><strong>Authentic maker vs. “poseur”</strong> (Mann) ↔ when does “insider” become a credential check?</li>
+      <li><strong>A lone scholar's stack</strong> (Smithies) ↔ community making: DIY or “do it together” (Mann)</li>
+      <li><strong>Control vs. dependence:</strong> Smithies still runs on Amazon. “Any facade of purity … is compromised.”</li>
+      <li><strong>Platform vs. local:</strong> the book points to ChatGPT as the easy way in</li>
+    </ul>
+  </section>
+
+  <!-- 8: (un)making as justification for development -->
+  <section class="slide" data-seconds="40">
+    <h2>The future of critical making: (un)making</h2>
+    <div class="cols">
+      <div>
+        <h3>Johnson &amp; Salter's talk (paraphrased)</h3>
+        <ul>
+          <li>Agentic tools risk becoming another walled garden, and they can also build alternatives to one</li>
+          <li>Nowviskie's resistances in the materials, plus a fourth loss: control over the steps, sold as convenience</li>
+          <li>Unmake the agent: reject, supplement, extend, critique</li>
+          <li>Maintenance is resistance</li>
+          <li>Their example: Leonardo Flores used Claude Code to move twenty years of sites off WordPress into static HTML, “a corporate tool to produce something that doesn't depend on corporate tools to function”</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Where distant making meets it</h3>
+        <ul>
+          <li>Keep the steps: small, inspectable processes first, local models where those fall short</li>
+          <li>The further along that gradient, the more I owe an account of what the process did</li>
+          <li>Build tools that carry production knowledge to people rather than hiding it behind templates</li>
+        </ul>
+      </div>
+    </div>
+    <p class="ref">Johnson and Salter, “Critical (Un)Making and the Agentic Humanities: A Talk in Four Crafts” (2026) · Flores, “A Farewell to Wordpress” (2026)</p>
+  </section>
+
+  <!-- 9 -->
+  <section class="slide" data-seconds="40">
+    <h2>Distant making, from practice</h2>
+    <div class="with-fig">
+    <div>
+    <blockquote>“my distance is a matter of choice” <span class="ref">(Ritchey, “What Ziner is Talking About”)</span></blockquote>
+    <div class="flow">
+      <div>
+        <h3>Ziner</h3>
+        <p>Critical making as prototyping (Ratto). A zine tool for FYC and the Ephemera Eternal workshop; its iterations stay visible in the commit history.</p>
+      </div>
+      <div class="arrow" aria-hidden="true">↓</div>
+      <div>
+        <h3>Distant making</h3>
+        <p>An insider steps back from an archive they know closely and makes something new from the whole, using processes they can see into.</p>
+      </div>
+      <div class="arrow" aria-hidden="true">↓</div>
+      <div>
+        <h3>Recoding</h3>
+        <p>Workshops: participants make from their own cultural data sets; interviews ask what the making decoded (Hall).</p>
+      </div>
+    </div>
+    </div>
+    <figure>
+      <img src="../assets/ziner-workshop-blurred.jpg" alt="Glenn, standing in a coffee shop, gestures toward a projected slide titled “Three Things First” while participants, their faces blurred, sit with laptops at a table; a hand-painted “Free Zine” sign leans against a chair in the foreground.">
+      <figcaption>Ephemera Eternal Ziner workshop, 16 October 2026</figcaption>
+    </figure>
+    </div>
+  </section>
+
+  <!-- 10: hand-off to discussion (not timed) -->
+  <section class="slide" data-seconds="0">
+    <h2>Back to your sheet</h2>
+    <p>Reread your free-write. Then write your “after.”</p>
+    <p class="prompt">With these moves in mind, return to what you wrote. What would you now count as critical making in your own work? Which tension does your work already sit inside, and what would it take to make something whose steps stay visible?</p>
+  </section>
+
+  <!-- 11: discussion (not timed); same questions as the worksheet -->
+  <section class="slide" data-seconds="0">
+    <h2>Discussion</h2>
+    <ol style="margin-left: 1.2em;">
+      <li>What could you make, instead of write, that would test a claim in your own research? What might the making show that the writing can't?</li>
+      <li>Kamĩrĩĩthũ let a community make from its own archive. Who are the insiders to the materials you study, and what would change if they did the making instead of you?</li>
+      <li>Flores used a corporate tool to build something that doesn't depend on corporate tools. Where is your line between using a platform and depending on it, and what do you owe your readers about a process you can't fully see into?</li>
+    </ol>
+  </section>
+
+</main>
+
+<div class="countdown" id="countdown" role="timer" aria-live="assertive">-5</div>
+
+<div class="timer paused" id="timer">
+  <span><span id="slide-num">1</span>/<span id="slide-total"></span></span>
+  <span class="slide-clock" id="slide-clock">0:20</span>
+  <div class="bar"><div class="fill" id="fill"></div></div>
+  <span>total <span id="total-clock">0:00</span> / <span id="total-plan"></span></span>
+  <span class="hint">← → move · space pause · R restart</span>
+</div>
+
+<script>
+(function () {
+  const slides = [...document.querySelectorAll('.slide')];
+  const $ = id => document.getElementById(id);
+  const timer = $('timer'), cd = $('countdown');
+  const GRACE = 5;
+  let i = 0, running = false, slideElapsed = 0, totalElapsed = 0, last = null, grace = null;
+
+  const fmt = s => { const neg = s < 0; s = Math.abs(Math.round(s));
+    return (neg ? '-' : '') + Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+  const plan = n => Number(slides[n].dataset.seconds) || 0;
+
+  $('slide-total').textContent = slides.length;
+  $('total-plan').textContent = fmt(slides.reduce((a, _, n) => a + plan(n), 0));
+
+  function render() {
+    slides.forEach((s, n) => s.classList.toggle('active', n === i));
+    $('slide-num').textContent = i + 1;
+    const p = plan(i), left = p - slideElapsed;
+    $('slide-clock').textContent = p ? fmt(left) : 'discussion';
+    $('fill').style.width = p ? Math.min(100, slideElapsed / p * 100) + '%' : '0';
+    timer.classList.toggle('over', p > 0 && left < 0);
+    timer.classList.toggle('paused', !running);
+    $('total-clock').textContent = fmt(totalElapsed);
+  }
+
+  // Grace period: -5 … -1, GO, then the clock runs. Starts on load/refresh.
+  function startGrace() {
+    running = false; slideElapsed = 0; totalElapsed = 0; i = 0; last = null;
+    clearInterval(grace);
+    let n = GRACE;
+    cd.hidden = false; cd.textContent = '-' + n;
+    render();
+    grace = setInterval(() => {
+      n -= 1;
+      if (n > 0) { cd.textContent = '-' + n; }
+      else if (n === 0) { cd.textContent = 'GO'; running = true; last = null; render(); }
+      else { cd.hidden = true; clearInterval(grace); }
+    }, 1000);
+  }
+
+  function tick(t) {
+    if (running) {
+      if (last !== null) { const d = (t - last) / 1000; slideElapsed += d; totalElapsed += d; }
+      last = t; render();
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function go(n) {
+    if (n < 0 || n >= slides.length) return;
+    i = n; slideElapsed = 0; render();
+  }
+
+  document.addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown'].includes(e.key)) go(i + 1);
+    else if (['ArrowLeft', 'PageUp'].includes(e.key)) go(i - 1);
+    else if (e.key === ' ') { e.preventDefault(); if (cd.hidden) { running = !running; last = null; render(); } }
+    else if (e.key.toLowerCase() === 'r') startGrace();
+  });
+  document.querySelector('.deck').addEventListener('click', () => go(i + 1));
+
+  startGrace();
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

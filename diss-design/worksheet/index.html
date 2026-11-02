@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Critical Making Worksheet - Glenn S. Ritchey III</title>
+  <link rel="stylesheet" href="../../main.css">
+  <style>
+    .ws-note { color: var(--grey-color-dark); }
+    .ws-links { font-family: var(--mono-font-family); font-size: 0.95rem; }
+    .ws-section { margin: calc(var(--spacing-unit) * 1.2) 0; }
+    .ws-section h2 { color: var(--accent-color); margin-bottom: 0.4em; }
+    .ws-prompt {
+      border-left: 4px solid var(--accent-color);
+      padding: 0.4em 0 0.4em 1em; margin: 0 0 1em;
+      font-size: 1.1rem;
+    }
+    .ws-section textarea {
+      display: block; width: 100%; box-sizing: border-box;
+      min-height: 14em; padding: 0.8em;
+      font: inherit; font-size: 1.05rem; line-height: 1.5;
+      color: var(--text-color); background: #fff;
+      border: 2px solid var(--grey-color-light); border-radius: 6px;
+      resize: vertical;
+    }
+    .ws-section textarea.short { min-height: 5em; }
+    .ws-section textarea:focus { outline: none; border-color: var(--accent-color); }
+    .ws-meta { color: var(--grey-color); font-size: 0.9rem; margin-top: 0.3em; }
+
+    .ws-actions { display: flex; flex-wrap: wrap; gap: 0.8em; align-items: center; margin-top: var(--spacing-unit); }
+    .ws-actions button {
+      font: inherit; font-size: 1rem; cursor: pointer;
+      padding: 0.5em 1em; border-radius: 6px;
+      border: 2px solid var(--accent-color);
+      background: var(--accent-color); color: #fff;
+    }
+    .ws-actions button:hover { background: var(--accent-color-dark); }
+    .ws-actions button.secondary { background: transparent; color: var(--accent-color); }
+    .ws-actions button.secondary:hover { background: var(--header-bg); }
+    #ws-status { color: var(--grey-color); font-size: 0.9rem; }
+
+    .ws-outline { border-top: 3px solid var(--accent-color); padding-top: 0.8em; }
+    .ws-outline ol { margin-left: 1.4em; }
+    .ws-outline li { margin-bottom: 0.6em; line-height: 1.5; }
+    .ws-outline ul { margin: 0.4em 0 0 1.2em; }
+    .ws-outline ul li { margin-bottom: 0.2em; }
+
+    /* Method reference: collapsed in the room, open for reading and print */
+    .ws-ref { border-top: 3px solid var(--accent-color); padding-top: 0.8em; }
+    .ws-ref details { border-bottom: 1px solid var(--grey-color-light); padding: 0.6em 0; }
+    .ws-ref summary {
+      cursor: pointer; font-weight: bold; font-size: 1.15rem; color: var(--accent-color);
+    }
+    .ws-ref details > *:not(summary) { margin-top: 0.7em; }
+    .ws-ref ol, .ws-ref ul { margin-left: 1.4em; }
+    .ws-ref li { margin-bottom: 0.4em; line-height: 1.5; }
+    .ws-rq { border-left: 4px solid var(--accent-color); padding-left: 1em; }
+
+    .ws-table-wrap { overflow-x: auto; }
+    .ws-table-wrap table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    .ws-table-wrap th, .ws-table-wrap td {
+      text-align: left; vertical-align: top;
+      padding: 0.5em 0.6em; border-bottom: 1px solid var(--grey-color-light);
+    }
+    .ws-table-wrap th { background: var(--header-bg); }
+    .ws-table-wrap ul { margin: 0 0 0 1.1em; }
+
+    .ws-study { margin-bottom: 1em; }
+    .ws-study p { margin-bottom: 0.3em; }
+
+    .ref { color: var(--grey-color); font-size: 0.9em; }
+    cite { font-style: italic; }
+    .ws-sources li { margin-bottom: 0.5em; }
+
+    /* Gaps for Glenn to fill; remove the class when settled */
+    .query {
+      background: #fff3b0; color: #5a4a00;
+      font-family: var(--mono-font-family); font-size: 0.85em;
+      padding: 0 0.3em; border-radius: 3px;
+    }
+
+    @media print {
+      .site-header .cv-navigation, .ws-actions, .ws-meta { display: none; }
+      .ws-section textarea { min-height: 6em; border-color: #999; }
+      .ws-ref summary { list-style: none; }
+      .thermal-text { animation: none; width: auto; opacity: 1; }
+      .thermal-text::after { content: none; }
+      .ws-prompt, .ws-ref summary, .ws-section h2 { break-after: avoid; }
+      .ws-study, .ws-table-wrap tr, .ws-sources li, .ws-outline li { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrapper">
+    <h1 class="animated-header thermal-text" id="site-title">Critical Making Worksheet</h1>
+    <div class="cv-navigation">
+      <ul>
+        <li><a href="https://glennritchey.net/" class="animated-link">Home</a></li>
+        <li><a href="../" class="animated-link">Dissertation Design</a></li>
+      </ul>
+    </div>
+  </div>
+</header>
+<main class="page-content" aria-label="Content">
+<div class="wrapper">
+
+<p class="ws-links"><strong>Slides:</strong> <a href="https://glennritchey.net/tandt/diss-design/slides/">glennritchey.net/tandt/diss-design/slides</a><br>
+<strong>Worksheet:</strong> <a href="https://glennritchey.net/tandt/diss-design/worksheet/">glennritchey.net/tandt/diss-design/worksheet</a></p>
+
+<p class="ws-note">Your writing saves automatically in this browser only. Nothing is sent anywhere, and I can't see it. Keep this tab open: we come back to it at the end.</p>
+
+<!-- ============ BEFORE ============ -->
+<section class="ws-section" aria-labelledby="before-h">
+  <h2 id="before-h">Before: free-write (2 minutes)</h2>
+  <p class="ws-prompt" id="before-prompt">What are your experiences with critical making? Is there any place in your own work for the convergence of critical thinking and creative making?</p>
+  <textarea id="before" aria-labelledby="before-h before-prompt" placeholder="Just write. Don't stop to edit."></textarea>
+  <p class="ws-meta" id="before-count">0 words</p>
+</section>
+
+<!-- ============ METHOD REFERENCE ============ -->
+<section class="ws-section ws-ref" aria-labelledby="ref-h">
+  <h2 id="ref-h">Critical making: method reference</h2>
+  <p class="ws-note">Open any section for the details. Everything here also prints.</p>
+
+  <details>
+    <summary>What is critical making?</summary>
+    <p>Critical making is a research method that uses material, hands-on work with technologies to extend critical reflection. Matt Ratto defines it as the effort “to use material forms of engagement with technologies to supplement and extend critical reflection and, in doing so, to reconnect our lived experiences with technologies to social and conceptual critique” <span class="ref">(Ratto 253)</span>.</p>
+    <p>The things made are not meant to be finished products. Prototypes are “used to extend knowledge and skills in relevant technical areas as well as to provide the means for conceptual exploration” <span class="ref">(Ratto 253)</span>. The knowledge comes through the making.</p>
+  </details>
+
+  <details>
+    <summary>In what fields is critical making used?</summary>
+    <ul>
+      <li>Science and technology studies and information studies (Ratto)</li>
+      <li>Technology and society; engineering pedagogy (Mann)</li>
+      <li>Digital humanities (Smithies)</li>
+      <li>DH methodologies and pedagogy (Johnson &amp; Salter)</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>How it works</summary>
+    <ol>
+      <li><strong>Gather the concepts.</strong> Review the relevant literature and name the concepts and questions the making will work through.</li>
+      <li><strong>Build prototypes together.</strong> Design and build technical prototypes collaboratively. Function matters less than what the building teaches.</li>
+      <li><strong>Reconfigure and reflect.</strong> Rework the prototypes, discuss what they show, and carry that back to the concepts.</li>
+    </ol>
+    <p class="ref">Paraphrased from Ratto (2011)</p>
+  </details>
+
+  <details>
+    <summary>Strengths and Limitations</summary>
+    <div class="ws-table-wrap">
+      <table>
+        <thead><tr><th scope="col">Strengths</th><th scope="col">Limitations</th></tr></thead>
+        <tbody><tr>
+          <td><ul>
+            <li>Understanding comes through “joint conceptual and materially productive work” <span class="ref">(Ratto 258)</span></li>
+            <li>Connects lived experience with technology to critique</li>
+            <li>Makes abstract claims about technology concrete and testable</li>
+            <li>Produces a shared object a group can discuss</li>
+          </ul></td>
+          <td><ul>
+            <li>The mapping of theory onto technology can turn reductive <span class="ref">(Ratto 257)</span></li>
+            <li>“Not a model for general use”: upkeep, one maker's skills, platform dependence <span class="ref">(Smithies)</span></li>
+            <li>The purpose can look opaque to colleagues <span class="ref">(Smithies)</span></li>
+            <li>AI is often handled expediently: one optional prompt, not a full module <span class="ref">(Johnson &amp; Salter)</span></li>
+          </ul></td>
+        </tr></tbody>
+      </table>
+    </div>
+  </details>
+
+  <details>
+    <summary>Key considerations for researchers</summary>
+    <ul>
+      <li><strong>Positionality:</strong> who counts as an insider, and when does “insider” become a credential check? <span class="ref">(Mann)</span></li>
+      <li><strong>Shared authority:</strong> at Kamĩrĩĩthũ, the community made from its own archive and the playwrights' voice was one among many <span class="ref">(Ngũgĩ)</span>.</li>
+      <li><strong>Visible steps:</strong> document the process. The less of a process you can see into, the more you owe an account of what it did.</li>
+      <li><strong>Maintenance:</strong> plan for who keeps the thing running after the study ends.</li>
+      <li><strong>Platform dependence:</strong> even a self-hosted stack can still run on Amazon <span class="ref">(Smithies)</span>.</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>How critical making compares to other making methods</summary>
+    <div class="ws-table-wrap">
+      <table>
+        <thead><tr><th scope="col">Method</th><th scope="col">Central question</th><th scope="col">How it differs from critical making</th></tr></thead>
+        <tbody>
+          <tr><td>Research through design</td><td>What can designing this artifact teach us?</td><td>Aims at design knowledge and better artifacts; critique of technology is not required</td></tr>
+          <tr><td>Speculative design</td><td>What futures could this object provoke us to imagine?</td><td>Objects provoke an audience, often as exhibits; making is less a site of the maker's own learning</td></tr>
+          <tr><td>Participatory design</td><td>How can the people affected shape the system?</td><td>Centers stakeholder decision-making in a system's design; reflection is a means rather than the end</td></tr>
+          <tr><td>Maker / DIY culture</td><td>Can I build or fix this myself?</td><td>Making as skill, hobby, or self-reliance; critique is optional (Mann's “do it together” pushes it toward critique)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <details>
+    <summary>How I plan to use critical making in my dissertation</summary>
+    <p class="ws-rq"><strong>Research question:</strong> How can critical making, practiced as distant making, build digital literacy by teaching tactile literacy through digital tools, and digital literacy through tactile making, when people work with large data sets?</p>
+    <p>I am integrating my critical making practice into digital literacy by developing <strong>distant making</strong>: an insider steps back from an archive they know closely and makes something new from the whole, using processes they can see into. “My distance is a matter of choice” <span class="ref">(Ritchey, “What Ziner is Talking About”)</span>.</p>
+    <ul>
+      <li><strong>Ziner</strong> is the prototype: a zine tool for first-year composition and the Ephemera Eternal workshop, whose iterations stay visible in its commit history.</li>
+      <li><strong>Recoding workshops</strong> move between the folded page and the tools that generate it. Participants make from their own cultural data sets, and follow-up interviews ask what the making decoded <span class="ref">(Hall)</span>.</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>Example studies using critical making</summary>
+    <div class="ws-study">
+      <p><strong>Ratto (2011): flwr.</strong></p>
+      <p class="ref">Ratto, Matt. “Critical Making: Conceptual and Material Studies in Technology and Social Life.” <cite>The Information Society</cite>, vol. 27, no. 4, July 2011, pp. 252–60, <a href="https://doi.org/10.1080/01972243.2011.583819">https://doi.org/10.1080/01972243.2011.583819</a>.</p>
+      <p>Participants built networked “flwrs” set to a gift economy. When most of them only listened, the network “died,” and the discussion turned to reciprocity.</p>
+    </div>
+    <div class="ws-study">
+      <p><strong>Mann (2014): maktivism.</strong></p>
+      <p class="ref">Mann, Steve. “Maktivism: Authentic Making for Technology in the Service of Humanity.” <cite>DIY Citizenship: Critical Making and Social Media</cite>, edited by Matt Ratto and Megan Boler, The MIT Press, 2014, <a href="https://doi.org/10.7551/mitpress/9568.003.0004">https://doi.org/10.7551/mitpress/9568.003.0004</a>.</p>
+      <p>Students hack dumpster computers and ID readers. The “Griefcase” makes a guard who wants to search it give up his own fingerprints.</p>
+    </div>
+    <div class="ws-study">
+      <p><strong>Smithies (2017): Full Stack DH.</strong></p>
+      <p class="ref">Smithies, James. “Full Stack DH: Building a Virtual Research Environment on a Raspberry Pi.” <cite>Making Things and Drawing Boundaries: Experiments in the Digital Humanities</cite>, edited by Jentery Sayers, University of Minnesota Press, 2017, pp. 102–14, <a href="https://doi.org/10.5749/j.ctt1pwt6wq.13">https://doi.org/10.5749/j.ctt1pwt6wq.13</a>.</p>
+      <p>A personal research environment on a Raspberry Pi: control of the whole stack, yet still dependent on Amazon, and still needing care.</p>
+    </div>
+    <div class="ws-study">
+      <p><strong>Johnson &amp; Salter (2025): “Generation.”</strong></p>
+      <p class="ref">Johnson, Emily, and Anastasia Salter. <cite>Critical Making in the Age of AI</cite>. Amherst College Press, 2025.</p>
+      <p>Students regenerate their own assignments with ChatGPT and critique the output.</p>
+    </div>
+  </details>
+</section>
+
+<!-- ============ SPARK NOTES ============ -->
+<section class="ws-section ws-outline" aria-labelledby="outline-h">
+  <h2 id="outline-h">Spark Notes</h2>
+  <ol>
+    <li><strong>A preliminary history: Kamĩrĩĩthũ.</strong> A community theatre shaped its play collectively, making from its own cultural archive; the playwrights' authority was one voice among many <span class="ref">(Ngũgĩ, <cite>Decolonising the Mind</cite>)</span>.</li>
+    <li><strong>What critical making is.</strong> Material engagement with technologies that supplements and extends critical reflection; prototypes built for conceptual exploration, not function <span class="ref">(Ratto 253)</span>.</li>
+    <li><strong>Where it's used, and what to watch for.</strong> STS, engineering pedagogy, and digital humanities. Its strength is understanding through making. Its risks: a reductive mapping of theory onto technology, upkeep that depends on one maker, a purpose that looks opaque to colleagues, and AI handled expediently.</li>
+    <li><strong>Four studies that made things.</strong> Ratto's flwr network, Mann's maktivism, Smithies's Full Stack DH, and Johnson &amp; Salter's “Generation” assignment.</li>
+    <li><strong>Tensions.</strong>
+      <ul>
+        <li>Authentic maker vs. “poseur”: when does “insider” become a credential check?</li>
+        <li>A lone scholar's stack vs. doing it together</li>
+        <li>Control vs. dependence</li>
+        <li>Platform vs. local</li>
+      </ul>
+    </li>
+    <li><strong>(Un)making.</strong> Agentic tools can become another walled garden or build alternatives to one. Unmake the agent (reject, supplement, extend, critique), and treat maintenance as resistance <span class="ref">(Johnson &amp; Salter)</span>.</li>
+    <li><strong>Distant making, from practice.</strong> Ziner as prototype → distant making (an insider steps back from an archive they know closely and makes something new from the whole, using processes they can see into) → recoding workshops, where participants make from their own cultural data.</li>
+  </ol>
+</section>
+
+<!-- ============ AFTER ============ -->
+<section class="ws-section" aria-labelledby="after-h">
+  <h2 id="after-h">After</h2>
+  <p class="ws-note">Reread your free-write above, then respond.</p>
+  <p class="ws-prompt" id="after-prompt">We moved from a community making from its own archive, through critical making as material engagement that extends reflection, to the tensions it leaves open (insider and poseur, lone and together, control and dependence) and to unmaking our tools by keeping their steps visible. With those moves in mind, return to what you wrote. What would you now count as critical making in your own work? Which of these tensions does your work already sit inside, and what would it take to make something whose steps stay visible?</p>
+  <textarea id="after" aria-labelledby="after-h after-prompt"></textarea>
+  <p class="ws-meta" id="after-count">0 words</p>
+</section>
+
+<!-- ============ DISCUSSION ============ -->
+<section class="ws-section" aria-labelledby="disc-h">
+  <h2 id="disc-h">Discussion questions</h2>
+  <p class="ws-note">Notes are optional and save with the rest of your writing.</p>
+
+  <p class="ws-prompt" id="q1-prompt">1. What could you make, instead of write, that would test a claim in your own research? What might the making show that the writing can't?</p>
+  <textarea class="short" id="q1" aria-labelledby="q1-prompt"></textarea>
+  <p class="ws-meta" id="q1-count">0 words</p>
+
+  <p class="ws-prompt" id="q2-prompt">2. Kamĩrĩĩthũ let a community make from its own archive. Who are the insiders to the materials you study, and what would change if they did the making instead of you?</p>
+  <textarea class="short" id="q2" aria-labelledby="q2-prompt"></textarea>
+  <p class="ws-meta" id="q2-count">0 words</p>
+
+  <p class="ws-prompt" id="q3-prompt">3. Flores used a corporate tool to build something that doesn't depend on corporate tools. Where is your line between using a platform and depending on it, and what do you owe your readers about a process you can't fully see into?</p>
+  <textarea class="short" id="q3" aria-labelledby="q3-prompt"></textarea>
+  <p class="ws-meta" id="q3-count">0 words</p>
+</section>
+
+<div class="ws-actions">
+  <button type="button" id="download">Download my writing (.txt)</button>
+  <button type="button" class="secondary" id="print">Print / save as PDF</button>
+  <button type="button" class="secondary" id="clear">Clear</button>
+  <span id="ws-status" role="status" aria-live="polite"></span>
+</div>
+
+<!-- ============ SOURCES ============ -->
+<section class="ws-section ws-sources" aria-labelledby="src-h">
+  <h2 id="src-h">Sources</h2>
+  <ul>
+    <li>Flores, Leonardo. “A Farewell to Wordpress.” <cite>Leonardo Flores</cite>, 10 May 2026, <a href="https://leonardoflores.net/posts/blog/news/a-farewell-to-wordpress.html">https://leonardoflores.net/posts/blog/news/a-farewell-to-wordpress.html</a>.</li>
+    <li>Hall, Stuart. “Encoding/Decoding.” <cite>Media and Cultural Studies: Keyworks</cite>, edited by Meenakshi Gigi Durham and Douglas M. Kellner, John Wiley &amp; Sons, 2012, pp. 137–44. Originally published by Hutchinson, 1980.</li>
+    <li>Johnson, Emily, and Anastasia Salter. <cite>Critical Making in the Age of AI</cite>. Amherst College Press, 2025.</li>
+    <li>Johnson, Emily, and Anastasia Salter. “Critical (Un)Making and the Agentic Humanities: A Talk in Four Crafts.” For the (Digital) Humanities Lecture Series, Institute for the Arts and Humanities and Digital Humanities Center, University of Virginia, 8 Oct. 2026, Wilson Hall, Charlottesville. Lecture.</li>
+    <li>Mann, Steve. “Maktivism: Authentic Making for Technology in the Service of Humanity.” <cite>DIY Citizenship: Critical Making and Social Media</cite>, edited by Matt Ratto and Megan Boler, The MIT Press, 2014, <a href="https://doi.org/10.7551/mitpress/9568.003.0004">https://doi.org/10.7551/mitpress/9568.003.0004</a>.</li>
+    <li>Ratto, Matt. “Critical Making: Conceptual and Material Studies in Technology and Social Life.” <cite>The Information Society</cite>, vol. 27, no. 4, July 2011, pp. 252–60, <a href="https://doi.org/10.1080/01972243.2011.583819">https://doi.org/10.1080/01972243.2011.583819</a>.</li>
+    <li>Ritchey, Glenn S., III. “What Ziner Is Talking About.” 2026. Unpublished manuscript.</li>
+    <li>Smithies, James. “Full Stack DH: Building a Virtual Research Environment on a Raspberry Pi.” <cite>Making Things and Drawing Boundaries: Experiments in the Digital Humanities</cite>, edited by Jentery Sayers, University of Minnesota Press, 2017, pp. 102–14, <a href="https://doi.org/10.5749/j.ctt1pwt6wq.13">https://doi.org/10.5749/j.ctt1pwt6wq.13</a>.</li>
+    <li>Thiong’o, Ngũgĩ wa. “The Language of African Theatre.” <cite>Decolonising the Mind</cite>, Boydell &amp; Brewer, 1988, pp. 34–62.</li>
+  </ul>
+</section>
+
+</div>
+</main>
+
+<script>
+(function () {
+  const KEY = 'tandt-cm-worksheet-v1';
+  const ids = ['before', 'after', 'q1', 'q2', 'q3'];
+  const fields = ids.map(id => document.getElementById(id));
+  const byId = id => document.getElementById(id);
+  const status = byId('ws-status');
+  let storageOk = true, saveTimer = null;
+
+  const words = s => (s.trim().match(/\S+/g) || []).length;
+  const count = f => {
+    const n = words(f.value);
+    byId(f.id + '-count').textContent = n + (n === 1 ? ' word' : ' words');
+  };
+  const noSave = () => { storageOk = false;
+    status.textContent = 'This browser is not saving. Use Download before closing the tab.'; };
+
+  function load() {
+    try {
+      const data = JSON.parse(localStorage.getItem(KEY) || '{}');
+      fields.forEach(f => { if (typeof data[f.id] === 'string') f.value = data[f.id]; });
+    } catch (e) { noSave(); }
+    fields.forEach(count);
+  }
+
+  function save() {
+    if (!storageOk) return;
+    try {
+      const data = {};
+      fields.forEach(f => { data[f.id] = f.value; });
+      localStorage.setItem(KEY, JSON.stringify(data));
+      status.textContent = 'Saved in this browser';
+    } catch (e) { noSave(); }
+  }
+
+  fields.forEach(f => f.addEventListener('input', () => {
+    count(f);
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(save, 400);
+  }));
+  window.addEventListener('beforeunload', save);
+
+  // Open every reference section for printing, then restore
+  let wasOpen = [];
+  window.addEventListener('beforeprint', () => {
+    const ds = [...document.querySelectorAll('.ws-ref details')];
+    wasOpen = ds.map(d => d.open);
+    ds.forEach(d => { d.open = true; });
+  });
+  window.addEventListener('afterprint', () => {
+    document.querySelectorAll('.ws-ref details').forEach((d, n) => { d.open = !!wasOpen[n]; });
+  });
+  byId('print').addEventListener('click', () => window.print());
+
+  byId('download').addEventListener('click', () => {
+    const prompt = id => byId(id).textContent.trim();
+    const block = (label, promptId, f) => [label, prompt(promptId), '', f.value.trim(), ''];
+    const text = [
+      'Critical Making Worksheet', '',
+      ...block('BEFORE', 'before-prompt', fields[0]),
+      ...block('AFTER', 'after-prompt', fields[1]),
+      'DISCUSSION', '',
+      ...block('', 'q1-prompt', fields[2]),
+      ...block('', 'q2-prompt', fields[3]),
+      ...block('', 'q3-prompt', fields[4])
+    ].join('\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
+    a.download = 'critical-making-worksheet.txt';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  });
+
+  byId('clear').addEventListener('click', () => {
+    if (!confirm('Erase all your responses from this browser? This cannot be undone.')) return;
+    fields.forEach(f => { f.value = ''; count(f); });
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    status.textContent = 'Cleared';
+  });
+
+  load();
+})();
+</script>
+</body>
+</html>
